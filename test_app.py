@@ -190,6 +190,38 @@ import matplotlib.pyplot as plt
 
 st.title("Lifetime FIRE Simulator")
 
+with st.expander("Methodology"):
+    st.markdown("""
+    The most well known retirement simulation is the famous Trinity study.
+    This study investigated what portion of a portfolio at retirement could be sustainably withdrawn every year, adjusting annually for inflation.
+    This approach used historical data to find the famous "4% rule": withdrawing 4% of your retirement savings in your first year of retirement and adjusting that amount for inflation each subsequent year.
+
+    This tool intends to answer a question: are we underweighting retirements starting in boom years and overweighting bust years?
+    We know retirees are unlikely to retire immediately after a market crash, put simply: if you had enough money to retire in 2009, you had enough to retire in 2007.
+    To achieve this we model an entire "lifetime", starting from any arbitrary point, investing some chosen amount yearly, and retiring at your chosen portfolio size.
+    The simulation then forecasts retirement by drawing an income from the portfolio until the end of the lifetime, or failure.
+
+    The tool will then report the number of simulations run, and the success rate of those simulations. 
+    
+    **Simulation Models:**
+    - The default is to use real historical data. This can generate only a limited quantity of simulations.
+    - The Monte Carlo mode will randomly sample the historical data to generate arbitrary synthetic sequences.
+
+    It is recommended to use log scale for Monte Carlo simulations, to avoid extreme positive outliers obscuring the details.
+
+    **Simulation Details:**
+    - Portfolio starts with user-defined capital and accumulates savings and investement returns each year.
+    - Once it reaches the target, withdrawals begin.
+    - Withdrawals can change after a specified number of retirement years, this simulates fixed income from pensions.
+    - Note the years in "Years before late retirement starts" is based on the full simulation length counting both "working" and "retired" years.
+    - The simulation stops after the chosen duration (success), if funds are depleted (failure), or if data runs out.
+    
+    This tool uses historical real global index returns dating back to 1872. By using real returns, there is no need to adjust for inflation anywhere.
+
+    The median time to retire will be different from the median in the graphed simulations. The medians in the graph are the median by *final balance*, time to retire uses the median by *time to retire*.
+    """)
+
+
 # uploaded_file = st.file_uploader("Upload CSV with 'Year' and 'Return' columns", type="csv")
 df = load_data()
 
@@ -605,33 +637,3 @@ if simulations:
     ax_cf.grid(True)
     st.pyplot(fig_cf)
     
-with st.expander("Methodology"):
-    st.markdown("""
-    The most well known retirement simulation is the famous Trinity study.
-    This study investigated what portion of a portfolio at retirement could be sustainably withdrawn every year, adjusting annually for inflation.
-    This approach used historical data to find the famous "4% rule": withdrawing 4% of your retirement savings in your first year of retirement and adjusting that amount for inflation each subsequent year.
-
-    This tool intends to answer a question: are we underweighting retirements starting in boom years and overweighting bust years?
-    We know retirees are unlikely to retire immediately after a market crash, put simply: if you had enough money to retire in 2009, you had enough to retire in 2007.
-    To achieve this we model an entire "lifetime", starting from any arbitrary point, investing some chosen amount yearly, and retiring at your chosen portfolio size.
-    The simulation then forecasts retirement by drawing an income from the portfolio until the end of the lifetime, or failure.
-
-    The tool will then report the number of simulations run, and the success rate of those simulations. 
-    
-    **Simulation Models:**
-    - The default is to use real historical data. This can generate only a limited quantity of simulations.
-    - The Monte Carlo mode will randomly sample the historical data to generate arbitrary synthetic sequences.
-
-    It is recommended to use log scale for Monte Carlo simulations, to avoid extreme positive outliers obscuring the details.
-
-    **Simulation Details:**
-    - Portfolio starts with user-defined capital and accumulates savings and investement returns each year.
-    - Once it reaches the target, withdrawals begin.
-    - Withdrawals can change after a specified number of retirement years, this simulates fixed income from pensions.
-    - Note the years in "Years before late retirement starts" is based on the full simulation length counting both "working" and "retired" years.
-    - The simulation stops after the chosen duration (success), if funds are depleted (failure), or if data runs out.
-    
-    This tool uses historical real global index returns dating back to 1872. By using real returns, there is no need to adjust for inflation anywhere.
-
-    The median time to retire will be different from the median in the graphed simulations. The medians in the graph are the median by *final balance*, time to retire uses the median by *time to retire*.
-    """)
