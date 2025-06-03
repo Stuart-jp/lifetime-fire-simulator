@@ -162,7 +162,7 @@ Year,Return
 2023,15.29%
 """
 
-@st.cache
+@st.cache_data
 def load_data():
     import io
     import pandas as pd
