@@ -575,6 +575,24 @@ if use_log_scale:
         "This avoids plotting extremely small values that distort the chart.*"
     )
 
+# Only include full or successful simulations
+retirement_ages = [
+    working_years
+    for (_, reason, working_years, _, _) in simulations
+    if reason in ["survived", "failed"]
+]
+if retirement_ages:
+    st.subheader("Years Until Retirement")
+    fig_retire, ax_retire = plt.subplots(figsize=(8, 4))
+
+    ax_retire.hist(retirement_ages, bins=range(min(retirement_ages), max(retirement_ages) + 2), edgecolor='black', color='skyblue')
+    ax_retire.set_xlabel("Years of Saving Until Retirement")
+    ax_retire.set_ylabel("Number of Simulations")
+    ax_retire.set_title("Distribution of Retirement Timing")
+    ax_retire.grid(True, axis='y', linestyle='--', alpha=0.4)
+
+    st.pyplot(fig_retire)
+
 st.subheader("Cash Flow")
 
 median_index = sorted_full[len(sorted_full) // 2][0]
